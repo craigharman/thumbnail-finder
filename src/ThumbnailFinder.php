@@ -61,7 +61,12 @@ class ThumbnailFinder
             ),
         ));
 
-        $html = file_get_contents($url, false, $ctx);
+        $html = @file_get_contents($url, false, $ctx);
+        if ($html === false) {
+            throw new \Exception("Could not contact URL");
+        } else {
+            return $this->findThumbnailFromHtml($html, $url);
+        }
 
         return $this->findThumbnailFromHtml($html, $url);
     }
